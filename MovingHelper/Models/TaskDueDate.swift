@@ -14,7 +14,8 @@ public enum TaskDueDate: String {
   OneDayBefore = "day_before",
   OneDayAfter = "day_after",
   OneWeekAfter = "week_after",
-  OneMonthAfter = "month_after"
+  OneMonthAfter = "month_after",
+  Other = "Others"
   
   static func fromIndex(index: Int) -> TaskDueDate {
     switch index {
@@ -33,6 +34,7 @@ public enum TaskDueDate: String {
     default:
       assert(false, "Unexpected index for task due date: \(index)")
     }
+    return Other
   }
   
   func getIndex() -> Int {
@@ -49,7 +51,10 @@ public enum TaskDueDate: String {
       return 4
     case .OneMonthAfter:
       return 5
+    default:
+        return -1
     }
+    return -1
   }
   
   func getTitle() -> String {
@@ -66,7 +71,10 @@ public enum TaskDueDate: String {
       return LocalizedStrings.oneWeekAfter
     case .OneMonthAfter:
       return LocalizedStrings.oneMonthAfter
+    default:
+        return "null"
     }
+    return "null"
   }
   
   public func isOverdueForMoveDate(moveDate: NSDate) -> Bool {
@@ -90,6 +98,8 @@ public enum TaskDueDate: String {
       components.day = 7
     case .OneMonthAfter:
       components.month = 1
+    default:
+        components.month = -1
     }
     
     return NSCalendar.currentCalendar().dateByAddingComponents(components, toDate: moveDate, options: [])!
